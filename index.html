@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rounak | Portfolio</title>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Optional: for very smooth animations (small file) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-content">
+    <h1 class="logo">Rounak Chouhan</h1>
+
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <!-- Close button inside mobile menu -->
+    
+    
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#certificates">Certificates</a>
+    <a href="#projects">Projects</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <img src="images/profile.jpeg" class="profile-img" alt="Rounak">
+
+  <h2>Hello, I'm <span class="highlight">Rounak</span></h2>
+  <h3><span class="typing"></span></h3>
+
+<div style="text-align: center;">
+  <ul style="list-style-type: none; padding: 0;">
+    <li>🎓 Electronics, Instrumentation & Control Engineering Student</li>
+    <li>💻 Passionate Web Developer</li>
+    <li>⚡ Problem Solver</li>
+    <li>🔌 Electronics & Hardware Project Enthusiast</li>
+  </ul>
+</div>
+
+
+  <div class="hero-buttons">
+    <a href="#projects" class="btn primary">Projects</a>
+    <a href="#contact" class="btn secondary">Contact</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section">
+  <h2>About Me</h2>
+<p style="margin-bottom: 20px;">
+  I am a dedicated B.Tech student in Electronics Instrumentation and Control Engineering at Government Engineering College, Ajmer, affiliated with Bikaner Technical University. I have a strong interest in software development, web technologies, and applying technical knowledge to solve real-world problems.
+</p>
+
+<p style="margin-bottom: 20px;">
+  With a passion for continuous learning, I enjoy exploring new tools, frameworks, and emerging technologies. I believe in building clean, efficient, and practical solutions through code while maintaining a strong foundation in engineering principles.
+</p>
+
+<p style="margin-bottom: 20px;">
+  Alongside my academic journey, I actively work on projects that enhance my problem-solving skills and technical expertise. I am always open to internships, collaborative projects, and opportunities that challenge me to grow both professionally and personally.
+</p>
+
+  <button class="btn primary" onclick="openResume()">View Resume</button>
+
+  <div id="resumeModal" class="resume-modal">
+    <div class="resume-content">
+      <span onclick="closeResume()" class="close-btn">×</span>
+      <iframe src="resume.pdf" title="Resume"></iframe>
+    </div>
+  </div>
+</section>
+
+<!-- HACKATHONS REEL -->
+<section id="hackathons" class="section">
+  <h2>Hackathons & Achievements</h2>
+  
+  <div class="reel-container">
+    <div class="reel-track">
+      <!-- Your hackathon images (use real paths; these are placeholders) -->
+      <img src="images/one.jpeg" alt="Team collaborating at hackathon">
+      <img src="images/two.jpeg" alt="Winning team on stage">
+      <img src="images/three.jpeg" alt="Late-night coding vibes">
+      <img src="images/four.jpeg" alt="Hackathon team photo">
+      <img src="images/five.jpeg" alt="Presenting our project">
+      <img src="images/six.jpeg" alt="Receiving award">
+
+      <!-- Duplicate set for seamless infinite loop --> 
+      <img src="images/one.jpeg" alt="Team collaborating at hackathon">
+      <img src="images/two.jpeg" alt="Winning team on stage">
+      <img src="images/three.jpeg" alt="Late-night coding vibes">
+      <img src="images/four.jpeg" alt="Hackathon team photo">
+      <img src="images/five.jpeg" alt="Presenting our project">
+      <img src="images/six.jpeg" alt="Receiving aw  ard">
+    </div>
+  </div>
+  
+  <p class="reel-note">Hover to pause • Scroll left to right • Moments from hackathons I've participated in</p>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="section">
+  <h2>Skills</h2>
+  <div class="skills">
+    <div><i class="fab fa-html5"></i> HTML</div>
+    <div><i class="fab fa-css3-alt"></i> CSS</div>
+    <div><i class="fab fa-js"></i> JavaScript</div>
+    <div><i class="fab fa-react"></i> React</div>
+    <div><i class="fab fa-python"></i> Python</div>
+    <div><i class="fas fa-database"></i> SQL</div>
+  </div>
+</section>
+
+
+<!-- CERTIFICATES -->
+<section id="certificates" class="section">
+  <h2>Certificates</h2>
+  
+  <div class="cert-gallery">
+    <!-- Example 1 -->
+    <div class="cert-item">
+      <div class="cert-thumb" data-full="images/1st year Intern.jpeg" onclick="openCertModal(this)">
+        <img src="images/1st year Intern.jpeg" alt="AWS Certified Cloud Practitioner">
+        <div class="cert-overlay">View Certificate</div>
+      </div>
+      <p class="cert-title">1st year Internship</p>
+    </div>
+
+    <!-- Example 2 -->
+    <div class="cert-item">
+      <div class="cert-thumb" data-full="images/2nd year Intern.jpeg" onclick="openCertModal(this)">
+        <img src="images/2nd year Intern.jpeg" alt="Google Data Analytics">
+      </div>
+      <p class="cert-title">2nd year Intern</p>
+    </div>
+
+    <!-- Example 3 -->
+    <div class="cert-item">
+      <div class="cert-thumb" data-full="images/Drone4s Hackathon.jpeg" onclick="openCertModal(this)">
+        <img src="images/Drone4s Hackathon.jpeg" alt="Google Data Analytics">
+      </div>
+      <p class="cert-title">Drone4s Hackathon</p>
+    </div>
+
+      <!-- Example 4 -->
+    <div class="cert-item">
+      <div class="cert-thumb" data-full="images/IIT-B Animation.jpeg" onclick="openCertModal(this)">
+        <img src="images/IIT-B Animation.jpeg" alt="Google Data Analytics">
+      </div>
+      <p class="cert-title">IIT-B Animation</p>
+    </div>
+
+        <!-- Example 5 -->
+    <div class="cert-item">
+      <div class="cert-thumb" data-full="images/TPO Certificate.jpeg" onclick="openCertModal(this)">
+        <img src="images/TPO Certificate.jpeg" alt="Google Data Analytics">
+      </div>
+      <p class="cert-title">TPO Certificate</p>
+    </div>
+
+    <!-- Add more items as needed -->
+  </div>
+
+  <!-- Modal for full view -->
+  <div id="certModal" class="cert-modal">
+    <div class="cert-modal-content">
+      <span class="cert-close" onclick="closeCertModal()">×</span>
+      <div class="cert-warning">View only • Not downloadable or shareable • © Rounak Portfolio</div>
+      <img id="certFullImg" src="" alt="Certificate">
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="section">
+  <h2>Projects</h2>
+
+  <div class="project">
+    <h3>Drone4s IIT Roorkee Hackathon</h3>
+    <p>Drone advance GPS/GSM Module</p>
+  </div>
+
+  <div class="project">
+    <h3>College Electrical Branch Hackathon</h3>
+    <p>Study Nest time manageing and refreshing Website</p>
+  </div>
+
+  <div class="project">
+    <h3>SIH Participation 2025</h3>
+    <p>Medical PDMS Sensor Module</p>
+  </div>
+
+    <div class="project">
+    <h3>CLG Mini Project</h3>
+    <p>RFID Attendence System</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <h2>Contact</h2>
+  <div class="social">
+    <a href="https://www.linkedin.com/in/rounak-chouhan-3b4145309/" target="_blank"><i class="fab fa-linkedin"></i></a>
+    <a href="https://github.com/GHOSTEYE26" target="_blank"><i class="fab fa-github"></i></a>
+    <a href="https://mail.google.com/mail/?view=cm&to=ghosteye2607@gmail.com&su=Portfolio%20Contact&body=Hello%20Rounak,%0A%0AI%20would%20like%20to%20connect%20with%20you." 
+   target="_blank" 
+   rel="noopener noreferrer">
+   <i class="fas fa-envelope"></i>
+</a>
+
+  </div>
+</section>
+
+<footer>
+  © 2026 Rounak
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
