@@ -720,6 +720,246 @@ h2, h3 {
   }
 }
 
+/* Comprehensive Mobile Optimization */
+@media (max-width: 768px) {
+  /* Navbar */
+  .navbar {
+    padding: 12px 4%;
+  }
+
+  .logo {
+    font-size: 1.4rem;
+  }
+
+  /* Hero Section */
+  .hero {
+    padding: 120px 4% 60px;
+    min-height: 70vh;
+  }
+
+  .profile-img {
+    width: 140px;
+    height: 140px;
+  }
+
+  .profile-container::before {
+    width: 180px;
+    height: 180px;
+  }
+
+  .profile-container::after {
+    width: 200px;
+    height: 200px;
+  }
+
+  h2 {
+    font-size: 2.2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Sections */
+  .section {
+    padding: 80px 4%;
+    margin-bottom: 20px;
+  }
+
+  .section h2 {
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+  }
+
+  /* Skills */
+  .skills {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .skills div {
+    padding: 20px 12px;
+  }
+
+  .skills i {
+    font-size: 2.2rem;
+  }
+
+  /* Projects */
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .project {
+    padding: 24px;
+  }
+
+  .project-header h3 {
+    font-size: 1.3rem;
+  }
+
+  .project-images {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .project-images img {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* Certificates */
+  .cert-gallery {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .cert-thumb {
+    width: 140px;
+    height: 140px;
+  }
+
+  /* Contact */
+  .social a {
+    font-size: 2.4rem;
+    margin: 0 15px;
+    padding: 12px;
+  }
+
+  /* Footer */
+  footer {
+    padding: 30px 4%;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens */
+  .hero {
+    padding: 100px 4% 40px;
+  }
+
+  .profile-img {
+    width: 120px;
+    height: 120px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .hero p {
+    font-size: 0.95rem;
+  }
+
+  .section h2 {
+    font-size: 1.8rem;
+  }
+
+  .skills {
+    grid-template-columns: 1fr;
+  }
+
+  .cert-gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .cert-thumb {
+    width: 120px;
+    height: 120px;
+  }
+
+  .social a {
+    font-size: 2rem;
+    margin: 0 10px;
+    padding: 10px;
+  }
+}
+
+/* Performance optimizations for mobile */
+@media (max-width: 768px) {
+  /* Reduce animation complexity on mobile */
+  .profile-container:hover::before {
+    animation: none;
+  }
+
+  .profile-container:hover::after {
+    animation: none;
+  }
+
+  /* Disable hover effects on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    .btn:hover,
+    .social a:hover,
+    .project:hover,
+    .cert-thumb:hover,
+    .skills div:hover {
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .profile-img:hover {
+      transform: none !important;
+    }
+
+    .carousel-item:hover {
+      transform: translate(-50%, -50%) rotateY(calc(var(--i) * 60deg)) translateZ(250px) !important;
+    }
+  }
+
+  /* Optimize carousel for mobile */
+  .carousel-container {
+    height: 250px;
+  }
+
+  .carousel {
+    width: 200px;
+    height: 200px;
+  }
+
+  .carousel-item {
+    width: 140px;
+    height: 100px;
+  }
+
+  .carousel-item {
+    transform: translate(-50%, -50%) rotateY(calc(var(--i) * 60deg)) translateZ(150px);
+  }
+
+  .carousel-item:hover {
+    transform: translate(-50%, -50%) rotateY(calc(var(--i) * 60deg)) translateZ(170px) scale(1.05);
+  }
+
+  /* Reduce particle effects on mobile */
+  .particles {
+    display: none;
+  }
+
+  /* Simplify orbit shapes on mobile */
+  .orbit-shape {
+    display: none;
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 /* SECTIONS */
 .section {
   padding: 110px 5%;
@@ -1378,5 +1618,4 @@ footer {
     transform: translate(-50%, -50%) rotateY(calc(var(--i) * 60deg)) translateZ(200px) scale(1.05);
   }
 }
-
 
