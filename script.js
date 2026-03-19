@@ -2,42 +2,58 @@
 const profileImg = document.querySelector('.profile-img');
 const profileContainer = document.querySelector('.profile-container');
 
-// Click effect - ripple animation
-profileImg.addEventListener('click', (e) => {
+// Check if device supports touch
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+// Click/Tap effect - ripple animation
+function handleProfileInteraction(e) {
   const ripple = document.createElement('div');
   ripple.style.position = 'absolute';
   ripple.style.borderRadius = '50%';
   ripple.style.background = 'rgba(0, 170, 255, 0.6)';
   ripple.style.transform = 'scale(0)';
   ripple.style.animation = 'ripple 0.6s linear';
-  ripple.style.left = (e.offsetX - 10) + 'px';
-  ripple.style.top = (e.offsetY - 10) + 'px';
+  ripple.style.pointerEvents = 'none';
+  ripple.style.zIndex = '20';
+
+  // Handle both mouse and touch events
+  const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+  const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+  const rect = profileContainer.getBoundingClientRect();
+
+  ripple.style.left = (clientX - rect.left - 10) + 'px';
+  ripple.style.top = (clientY - rect.top - 10) + 'px';
   ripple.style.width = '20px';
   ripple.style.height = '20px';
-  ripple.style.zIndex = '20';
 
   profileContainer.appendChild(ripple);
 
   setTimeout(() => {
-    ripple.remove();
+    if (ripple.parentNode) {
+      ripple.remove();
+    }
   }, 600);
-});
+}
 
-// Mouse tracking effect
-profileContainer.addEventListener('mousemove', (e) => {
-  const rect = profileContainer.getBoundingClientRect();
-  const x = e.clientX - rect.left - rect.width / 2;
-  const y = e.clientY - rect.top - rect.height / 2;
+profileImg.addEventListener(isTouchDevice ? 'touchstart' : 'click', handleProfileInteraction);
 
-  const rotateX = (y / rect.height) * 20;
-  const rotateY = -(x / rect.width) * 20;
+// Mouse tracking effect - only on non-touch devices
+if (!isTouchDevice) {
+  profileContainer.addEventListener('mousemove', (e) => {
+    const rect = profileContainer.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
 
-  profileImg.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-});
+    const rotateX = (y / rect.height) * 20;
+    const rotateY = -(x / rect.width) * 20;
 
-profileContainer.addEventListener('mouseleave', () => {
-  profileImg.style.transform = '';
-});
+    profileImg.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+  });
+
+  profileContainer.addEventListener('mouseleave', () => {
+    profileImg.style.transform = '';
+  });
+}
 
 // Add ripple animation to CSS dynamically
 const style = document.createElement('style');
@@ -132,22 +148,36 @@ function closeResume() {
   document.getElementById("resumeModal").style.display = "none";
 }
 
-// OPTIONAL: Section fade-in + navbar shadow on scroll
-const sections = document.querySelectorAll('.section');
+// Performance optimizations for mobile
+const isMobile = window.innerWidth <= 768;
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.15 });
+// Reduce animation complexity on mobile
+if (isMobile) {
+  // Disable continuous animations that might cause lag
+  document.documentElement.style.setProperty('--animation-duration', '0.3s');
 
-sections.forEach(section => observer.observe(section));
+  // Use passive listeners for better scroll performance
+  window.addEventListener('scroll', () => {
+    document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+} else {
+  // OPTIONAL: Section fade-in + navbar shadow on scroll
+  const sections = document.querySelectorAll('.section');
 
-window.addEventListener('scroll', () => {
-  document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 60);
-});
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  sections.forEach(section => observer.observe(section));
+
+  window.addEventListener('scroll', () => {
+    document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+}
 // Certificate Modal
 function openCertModal(element) {
   const fullSrc = element.getAttribute('data-full');
@@ -160,31 +190,33 @@ function closeCertModal() {
   document.getElementById('certFullImg').src = ''; // clear src
 }
 
-// MAGNETIC EFFECT FOR BUTTONS AND SOCIAL ICONS
+// MAGNETIC EFFECT FOR BUTTONS AND SOCIAL ICONS - Optimized for mobile
 const interactiveElements = document.querySelectorAll('.btn, .social a');
 
-interactiveElements.forEach(element => {
-  element.addEventListener('mousemove', (e) => {
-    const rect = element.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
+if (!isTouchDevice) {
+  interactiveElements.forEach(element => {
+    element.addEventListener('mousemove', (e) => {
+      const rect = element.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
 
-    const distance = Math.sqrt(x * x + y * y);
-    const maxDistance = 60;
+      const distance = Math.sqrt(x * x + y * y);
+      const maxDistance = 60;
 
-    if (distance < maxDistance) {
-      const strength = (maxDistance - distance) / maxDistance;
-      const moveX = (x / distance) * strength * 10;
-      const moveY = (y / distance) * strength * 10;
+      if (distance < maxDistance) {
+        const strength = (maxDistance - distance) / maxDistance;
+        const moveX = (x / distance) * strength * 10;
+        const moveY = (y / distance) * strength * 10;
 
-      element.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${strength * 5}deg)`;
-    }
+        element.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${strength * 5}deg)`;
+      }
+    });
+
+    element.addEventListener('mouseleave', () => {
+      element.style.transform = '';
+    });
   });
-
-  element.addEventListener('mouseleave', () => {
-    element.style.transform = '';
-  });
-});
+}
 
 // BUTTON CLICK SOUND EFFECT (visual feedback)
 const buttons = document.querySelectorAll('.btn');
@@ -207,20 +239,29 @@ document.getElementById('certModal').addEventListener('click', function(e) {
 // Extra protection: disable right-click on full image
 document.getElementById('certFullImg').addEventListener('contextmenu', e => e.preventDefault());
 
-// 3D Carousel interaction - click to rotate manually
-let carouselRotation = 0;
-document.querySelectorAll('.carousel-item').forEach((item, index) => {
-  item.addEventListener('click', () => {
-    carouselRotation = -index * 60; // Rotate to bring clicked item to front
-    document.querySelector('.carousel').style.transform = `rotateY(${carouselRotation}deg)`;
-    document.querySelector('.carousel').style.animation = 'none'; // Pause auto-rotation
-  });
+// Performance optimization: Defer non-critical animations
+document.addEventListener('DOMContentLoaded', function() {
+  // Delay heavy animations until page is loaded
+  setTimeout(() => {
+    // Enable carousel rotation after initial load
+    const carousels = document.querySelectorAll('.carousel');
+    carousels.forEach(carousel => {
+      if (!isMobile) {
+        carousel.style.animation = 'rotateCarousel 20s linear infinite';
+      }
+    });
+  }, 1000);
 });
 
-// Resume auto-rotation on mouse leave
-document.querySelector('.carousel-container').addEventListener('mouseleave', () => {
-  document.querySelector('.carousel').style.animation = 'rotateCarousel 20s linear infinite';
-});
+// Touch-friendly carousel interaction
+if (isTouchDevice) {
+  document.querySelectorAll('.carousel-item').forEach((item, index) => {
+    item.addEventListener('touchstart', () => {
+      // Stop auto-rotation on touch
+      document.querySelector('.carousel').style.animation = 'none';
+    });
+  });
+}
 
 // Project Accordion Logic
 document.querySelectorAll(".project").forEach(project => {
