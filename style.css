@@ -1,7 +1,14 @@
+/* ================ CRITICAL MOBILE FIX ================ */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* Force proper mobile rendering */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
 }
 
 body {
@@ -10,6 +17,8 @@ body {
   color: #ffffff;
   line-height: 1.6;
   scroll-behavior: smooth;
+  min-height: 100dvh;           /* Better than 100vh on mobile */
+  overflow-x: hidden;
 }
 
 /* NAVBAR – black with white elements */
@@ -1618,4 +1627,3 @@ footer {
     transform: translate(-50%, -50%) rotateY(calc(var(--i) * 60deg)) translateZ(200px) scale(1.05);
   }
 }
-
