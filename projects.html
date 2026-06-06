@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #e0e0ff;
+      background: transparent;
+      line-height: 1.6;
+    }
+
+    .projects-container {
+      padding: 10px;
+    }
+
+    h2 {
+      color: #00f0ff;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2.2rem;
+      background: linear-gradient(90deg, #00f0ff, #ff00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      background: rgba(255,255,255,0.06);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 240, 255, 0.15);
+      transition: all 0.4s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 240, 255, 0.2);
+      border-color: #00f0ff;
+    }
+
+    .project-img {
+      height: 180px;
+      background: linear-gradient(45deg, #1a1a2e, #16213e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+    }
+
+    .project-content {
+      padding: 18px;
+    }
+
+    .project-content h3 {
+      margin: 0 0 10px 0;
+      color: #ffffff;
+      font-size: 1.25rem;
+    }
+
+    .project-desc {
+      color: #b0b0ff;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .tech {
+      background: rgba(0, 240, 255, 0.1);
+      color: #00ffcc;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+
+    .project-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .project-links a {
+      color: #00f0ff;
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .project-links a:hover {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="projects-container">
+    <h2>Featured Projects</h2>
+
+    <div class="projects-grid">
+
+      <!-- Project 1 -->
+      <div class="project-card">
+        <div class="project-img">💻</div>
+        <div class="project-content">
+          <h3>SIH Participation 2025 - Medical PDMS Sensor Module</h3>
+          <p class="project-desc">Participated in Smart India Hackathon 2025 and developed a Medical PDMS (Polydimethylsiloxane) Sensor Module for non-invasive health monitoring. The flexible sensor detects vital signs like pulse, temperature, and pressure changes. Designed for wearable medical applications with high sensitivity and biocompatibility. Collaborated with a team of 6 members; shortlisted in top 25 teams regionally.</p>
+          <div class="tech-stack">
+            <span class="tech">ESP32</span>
+            <span class="tech">Sensors</span>
+            <span class="tech">IOT</span>
+            <span class="tech">PDMS</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/GHOSTEYE26" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-card">
+        <div class="project-img">💻</div>
+        <div class="project-content">
+          <h3>Drone4s IIT Roorkee Hackathon - Drone advance GPS/GSM Module</h3>
+          <p class="project-desc">Developed an advanced GPS/GSM module for drones during the Drone4s hackathon at IIT Roorkee. The system enables real-time tracking, geofencing alerts, and long-range communication for autonomous drone operations. Key features include low-power consumption, obstacle avoidance integration, and live telemetry data transmission. Won recognition for innovation in drone navigation technology.</p>
+          <div class="tech-stack">
+            <span class="tech">GPS</span>
+            <span class="tech">GSM</span>
+            <span class="tech">ESP32</span>
+            <span class="tech">Sensors</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/GHOSTEYE26" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card">
+        <div class="project-img">💻</div>
+        <div class="project-content">
+          <h3>College Electrical Branch Hackathon - Study Nest time managing and refreshing Website</h3>
+          <p class="project-desc">Created 'Study Nest' – a smart time management and productivity website for students. Features include Pomodoro timer, task scheduler, focus mode with ambient sounds, progress tracking, and daily motivation quotes. Built with HTML, CSS, JavaScript, and localStorage for data persistence. Won 2nd place for best UI/UX and practical student utility.</p>
+          <div class="tech-stack">
+            <span class="tech">HTML</span>
+            <span class="tech">CSS</span>
+            <span class="tech">JavaScript</span>
+            <span class="tech">LocalStorage</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/GHOSTEYE26" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="project-card">
+        <div class="project-img">💻</div>
+        <div class="project-content">
+          <h3>Hack Arya Verse 2.0 - Civic Sense: Report Issues to Officials</h3>
+          <p class="project-desc">Many civic infrastructure problems such as potholes, damaged roads, and broken public facilities remain unresolved due to inefficient reporting systems and lack of proper communication between citizens and authorities. There is a need for a simple and transparent platform that allows citizens to report issues easily using images or videos with location evidence while ensuring user privacy. This project aims to create a technology-driven solution that connects citizens with authorities and improves the reporting and resolution of civic infrastructure problems.</p>
+          <div class="tech-stack">
+            <span class="tech">HTML</span>
+            <span class="tech">CSS3</span>
+            <span class="tech">Vanilla JS</span>  
+            <span class="tech">MongoDB</span>
+          </div>
+          <div class="project-links">
+            <a href="https://ghosteye26.github.io/CIVICWATCH/" target="_blank"><i class="fas fa-external-link-alt"></i> View Project</a>
+            <a href="https://youtu.be/yhRLZjegIJc" target="_blank"><i class="fas fa-video"></i> Video</a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Project 5 -->
+      <div class="project-card">
+        <div class="project-img">💻</div>
+        <div class="project-content">
+          <h3>College Mini project - Portable Environmental Monitoring Device using ESP32</h3>
+          <p class="project-desc">This project is an IoT-based environmental monitoring system built using the ESP32 Development Board and multiple sensors to measure real-time environmental conditions. Sensors like the DHT22 Temperature and Humidity Sensor, BH1750 Light Intensity Sensor, MQ135 Air Quality Sensor, and PMS5003 Particulate Matter Sensor collect data such as temperature, humidity, light intensity, and air pollution levels.The ESP32 processes this data and sends it over Wi-Fi to a web-based dashboard, where users can view live readings on any device like a smartphone or laptop. This eliminates the need for expensive equipment and provides a low-cost, portable, and real-time solution for monitoring environmental conditions.</p>
+          <div class="tech-stack">
+            <span class="tech">DHT22</span>
+            <span class="tech">BH1750</span>
+            <span class="tech">MQ135</span>
+            <span class="tech">PMS5003</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/GHOSTEYE26/Airpulse-Project-Code" target="_blank"><i class="fas fa-external-link-alt"></i> View Project</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>

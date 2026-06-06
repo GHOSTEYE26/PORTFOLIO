@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100%;
+}
+
+body {
+    background: #070a14;
+    color: #eef2ff;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.page-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+.gallery-sidebar {
+    width: 280px;
+    background: #0f172a;
+    border-right: 1px solid rgba(56, 189, 248, 0.2);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+.branding h1 {
+    font-size: 1.75rem;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    background: linear-gradient(90deg, #38bdf8, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.branding p {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.filter-list {
+    margin-top: 32px;
+    display: grid;
+    gap: 10px;
+}
+
+.filter-btn {
+    background: #111827;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    color: #e2e8f0;
+    padding: 14px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.55);
+    color: #ffffff;
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    font-size: 0.85rem;
+    color: #718096;
+    text-align: center;
+}
+
+.gallery-main {
+    flex: 1;
+    padding: 28px;
+}
+
+.gallery-header {
+    margin-bottom: 24px;
+}
+
+.gallery-header h2 {
+    font-size: 2rem;
+    margin-bottom: 8px;
+}
+
+.gallery-header p {
+    color: #94a3b8;
+    max-width: 700px;
+    line-height: 1.7;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #111827;
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-4px);
+    border-color: rgba(56, 189, 248, 0.5);
+}
+
+.gallery-item img,
+.gallery-item video {
+    display: block;
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
+
+.item-label {
+    padding: 14px;
+}
+
+.item-label h3 {
+    font-size: 1rem;
+    margin-bottom: 6px;
+}
+
+.item-label span {
+    color: #94a3b8;
+    font-size: 0.9rem;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(7, 10, 20, 0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    z-index: 50;
+}
+
+.modal-overlay.open {
+    display: flex;
+}
+
+.modal-card {
+    width: min(980px, 100%);
+    max-height: calc(100vh - 80px);
+    overflow: hidden;
+    border-radius: 22px;
+    background: #111827;
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    box-shadow: 0 28px 60px rgba(0, 0, 0, 0.45);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.modal-header h3 {
+    font-size: 1.15rem;
+}
+
+.modal-header button {
+    border: none;
+    background: transparent;
+    color: #cbd5e1;
+    font-size: 1.3rem;
+    cursor: pointer;
+}
+
+.modal-body {
+    background: #0f172a;
+}
+
+.modal-body img,
+.modal-body video {
+    display: block;
+    width: 100%;
+    max-height: calc(100vh - 160px);
+    object-fit: contain;
+}
+
+.modal-body video {
+    background: #000;
+}
+
+@media (max-width: 900px) {
+    .page-shell {
+        flex-direction: column;
+    }
+
+    .gallery-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    .gallery-main {
+        padding: 20px;
+    }
+
+    .gallery-item img,
+    .gallery-item video {
+        height: 200px;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="page-shell">
+    <aside class="gallery-sidebar">
+        <div class="branding">
+            <h1>Internship</h1>
+            <p>Browse thumbnails, filter by category, and open any image or video in a full preview.</p>
+        </div>
+
+        <div class="sidebar-footer">
+            Internship - Details v1.0
+        </div>
+    </aside>
+
+    <main class="gallery-main">
+        <section class="gallery-header">
+            <h2>Internship Experiences</h2>
+            <p>Acquiring valuable industry experience by working on innovative projects and learning from experienced professionals.</p>
+        </section>  
+
+        <div class="gallery-grid">
+            <div class="gallery-item" data-category="photos" data-type="image" data-src="images/profile.jpeg" data-title="Profile Portrait">
+                <img src="images/1st year Intern.jpeg" alt="Profile Portrait">
+                <div class="item-label">
+                    <h3>Indian Railways</h3>
+                    <span>Observed and studied communication systems used in railway operations, including station-to-station and train-to-station communication networks. Gained exposure to wireless communication bands, frequency allocation, signaling systems, safety protocols, and railway operational infrastructure.</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="photos" data-type="image" data-src="images/one.jpeg" data-title="Portfolio Sample 1">
+                <img src="images/2nd year Intern.jpeg" alt="Portfolio Sample 1">
+                <div class="item-label">
+                    <h3>PWD - Jodhpur</h3>
+                    <span>Observed and studied electrical installations and infrastructure in government buildings under the Public Works Department (PWD). Gained practical exposure to building wiring systems, electrical connections for elevators, power distribution networks, and backup power arrangements. Learned about hospital electrical systems, including emergency power supply and automatic operation of critical equipment during power outages. Assisted in understanding electrical safety practices, maintenance procedures, and building services engineering.</span>
+                </div>
+            </div>
+            <div class="gallery-item" data-category="photos" data-type="image" data-src="images/one.jpeg" data-title="Portfolio Sample 1">
+                <img src="images/3rd year Intern.jpeg" alt="Portfolio Sample 1">
+                <div class="item-label">
+                    <h3>DRDO - Jodhpur</h3>
+                    <span>During my internship at the Defence Research and Development Organisation (DRDO), Jodhpur, I explored key concepts of instrumentation and electronics, including signal conditioning, analog-to-digital conversion, sensor integration, and PCB design fundamentals. This experience enhanced my understanding of real-world electronic systems, data acquisition techniques, and embedded hardware development.</span>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal-overlay" id="galleryModal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3 id="modalTitle">Preview</h3>
+            <button id="closeModalBtn" aria-label="Close preview">×</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <img src="" alt="" id="modalImage" style="display:none;">
+            <video src="" controls id="modalVideo" style="display:none;"></video>
+        </div>
+    </div>
+</div>
+
+<script>
+const filterButtons = document.querySelectorAll('.filter-btn');
+const galleryItems = document.querySelectorAll('.gallery-item');
+const modalOverlay = document.getElementById('galleryModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalImage = document.getElementById('modalImage');
+const modalVideo = document.getElementById('modalVideo');
+const closeModalBtn = document.getElementById('closeModalBtn');
+
+function setActiveFilter(filter) {
+    filterButtons.forEach(button => {
+        button.classList.toggle('active', button.dataset.filter === filter);
+    });
+
+    galleryItems.forEach(item => {
+        if (filter === 'all' || item.dataset.category === filter) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => setActiveFilter(button.dataset.filter));
+});
+
+function openModal(item) {
+    const type = item.dataset.type;
+    const src = item.dataset.src;
+    const title = item.dataset.title;
+
+    modalTitle.textContent = title;
+
+    if (type === 'video') {
+        modalVideo.src = src;
+        modalVideo.style.display = 'block';
+        modalVideo.play();
+        modalImage.style.display = 'none';
+        modalImage.src = '';
+    } else {
+        modalImage.src = src;
+        modalImage.alt = title;
+        modalImage.style.display = 'block';
+        modalVideo.pause();
+        modalVideo.src = '';
+        modalVideo.style.display = 'none';
+    }
+
+    modalOverlay.classList.add('open');
+}
+
+function closeModal() {
+    modalOverlay.classList.remove('open');
+    modalVideo.pause();
+    modalVideo.currentTime = 0;
+}
+
+galleryItems.forEach(item => {
+    item.addEventListener('click', () => openModal(item));
+});
+
+closeModalBtn.addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', event => {
+    if (event.target === modalOverlay) {
+        closeModal();
+    }
+});
+
+window.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && modalOverlay.classList.contains('open')) {
+        closeModal();
+    }
+});
+</script>
+</body>
+</html>

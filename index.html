@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rounak Chouhan - Portfolio OS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --accent: #00f0ff;
+      --surface: rgba(25, 25, 35, 0.95);
+      --glass: rgba(15, 15, 30, 0.85);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      color: #e0e0ff;
+      user-select: none;
+      position: relative;
+    }
+
+    /* Live Video Background */
+    #video-bg {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    #video-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(10, 10, 31, 0.65);
+      z-index: -1;
+    }
+
+    /* Boot Screen */
+    #boot-screen {
+      position: fixed;
+      inset: 0;
+      background: #0a0a1f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      flex-direction: column;
+      gap: 20px;
+      transition: opacity 0.8s ease; /* Added for smooth boot transition */
+    }
+
+    .logo {
+      font-size: 4.5rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #00f0ff, #ff00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Desktop */
+    .desktop {
+      height: calc(100vh - 52px);
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 90px);
+      gap: 20px;
+      align-content: start;
+    }
+
+    .icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 90px;
+      padding: 8px;
+      border-radius: 12px;
+      color: white;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .icon:hover { background: rgba(255,255,255,0.12); }
+
+    .icon i { font-size: 52px; margin-bottom: 8px; }
+    .icon span { font-size: 0.85rem; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
+
+    /* Window */
+    .window {
+      position: absolute;
+      background: var(--surface);
+      border-radius: 14px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+      width: 750px;       /* Changed to a default initial width instead of only mins */
+      height: 500px;      /* Changed to a default initial height instead of only mins */
+      top: 10%;           /* Centered initial positioning alignment */
+      left: 15%;
+      display: none;
+      flex-direction: column;
+    }
+
+    .title-bar {
+      height: 46px;
+      background: rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      cursor: move;
+      user-select: none;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .title-bar-buttons {
+      display: flex;
+      height: 100%;
+    }
+
+    .title-btn {
+      width: 46px;
+      height: 100%;
+      position: relative;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .title-btn:hover { background: rgba(255,255,255,0.1); }
+    .close:hover { background: #e81123 !important; }
+
+    /* Button Icons */
+    .minimize::before {
+      content:""; position:absolute; width:12px; height:2px; background:white;
+      left:50%; top:50%; transform:translate(-50%, 6px);
+    }
+    .maximize::before {
+      content:""; position:absolute; width:12px; height:10px; border:2px solid white;
+      left:50%; top:50%; transform:translate(-50%, -50%);
+    }
+    .close::before, .close::after {
+      content:""; position:absolute; width:14px; height:2px; background:white;
+      left:50%; top:50%;
+    }
+    .close::before { transform: translate(-50%,-50%) rotate(45deg); }
+    .close::after { transform: translate(-50%,-50%) rotate(-45deg); }
+
+    .window-content {
+      flex: 1;
+      padding: 20px;
+      overflow: auto;
+      background: #0a0a1f;
+      color: #e0e0ff;
+    }
+
+    /* Taskbar */
+    .taskbar {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 52px;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      z-index: 10000;
+      gap: 4px;
+    }
+
+    .taskbar-apps {
+      display: flex;
+      flex-direction: row;
+      gap: 4px;
+      overflow-x: auto;
+      padding: 4px 0;
+    }
+
+    .start-btn, .task-item {
+      width: 46px; height: 46px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .start-btn:hover, .task-item:hover { background: rgba(255,255,255,0.1); }
+
+    .task-item.active {
+      background: rgba(0, 240, 255, 0.25);
+      border-bottom: 3px solid var(--accent);
+    }
+
+    /* Start Menu Placeholder UI Component */
+    #start-menu {
+      position: fixed;
+      bottom: 60px;
+      left: 10px;
+      width: 280px;
+      height: 350px;
+      background: var(--glass);
+      backdrop-filter: blur(25px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+      display: none;
+      z-index: 25000;
+      padding: 15px;
+    }
+
+    /* Wallpaper Menu - Text Only */
+    #wallpaper-menu, #icon-context-menu {
+      position: fixed;
+      background: var(--glass);
+      backdrop-filter: blur(30px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 14px;
+      padding: 10px 0;
+      width: 220px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      display: none;
+      z-index: 20000;
+    }
+
+    .wallpaper-item {
+      padding: 12px 20px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .wallpaper-item:hover {
+      background: rgba(0, 240, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <video id="video-bg" autoplay loop muted playsinline>
+    <source src="images/Wallpaper 3.mp4" type="video/mp4">
+  </video>
+  <div id="video-overlay"></div>
+
+  <div id="boot-screen">
+    <div class="logo">RC</div>
+    <p style="color:#00f0ff; font-size:1.1rem;">Loading Portfolio OS...</p>
+  </div>
+
+  <div class="desktop" id="desktop">
+    <div class="icon" data-id="about"><i class="fas fa-user"></i><span>About Me</span></div>
+    <div class="icon" data-id="skills"><i class="fas fa-tools"></i><span>Skills</span></div>
+    <div class="icon" data-id="projects"><i class="fas fa-folder-open"></i><span>Projects</span></div>
+    <div class="icon" data-id="resume"><i class="fas fa-file-pdf"></i><span>Resume</span></div>
+    <div class="icon" data-id="contact"><i class="fas fa-address-book"></i><span>Contact</span></div>
+    <div class="icon" data-id="gallery"><i class="fas fa-images"></i><span>Gallery</span></div>
+    <div class="icon" data-id="internship"><i class="fas fa-briefcase"></i><span>Internship</span></div>
+  </div>
+
+  <div id="start-menu">
+    <h4 style="color: var(--accent); margin-bottom: 10px;">Applications</h4>
+    <p style="font-size: 0.9rem; color: #aaa;">Portfolio OS Systems Active. hello friends it's me Rounak</p>
+  </div>
+
+  <div class="taskbar">
+    <div class="start-btn" id="start-btn"><i class="fab fa-windows"></i></div>
+    <div class="taskbar-apps" id="taskbarApps"></div>
+    <div style="margin-left:auto; padding:0 15px; font-size:0.9rem;" id="clock"></div>
+  </div>
+
+  <div id="wallpaper-menu">
+    <div class="wallpaper-item" data-url="images/Wallpaper 2.mp4">Wallpaper 1</div>
+    <div class="wallpaper-item" data-url="images/Wallpaper 1.mp4">Wallpaper 2</div>
+    <div class="wallpaper-item" data-url="images/Wallpaper 3.mp4">Wallpaper 3</div>
+    <div class="wallpaper-item" data-url="images/Wallpaper 4.mp4">Wallpaper 4</div>
+  </div>
+
+  <div id="icon-context-menu">
+    <div class="wallpaper-item" id="ctx-open"><i class="fas fa-folder-open"></i> Open</div>
+    <div class="wallpaper-item" id="ctx-rename"><i class="fas fa-edit"></i> Rename</div>
+    <div class="wallpaper-item" id="ctx-delete"><i class="fas fa-trash"></i> Delete</div>
+  </div>
+
+  <script>
+    // Boot
+    setTimeout(() => {
+      document.getElementById('boot-screen').style.opacity = '0';
+      setTimeout(() => document.getElementById('boot-screen').remove(), 800);
+    }, 1800);
+
+    // Clock
+    setInterval(() => {
+      document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    }, 1000);
+
+    let zIndex = 100;
+
+    async function openWindow(id, title) {
+      let win = document.getElementById(id + '-window');
+      if (!win) {
+        win = document.createElement('div');
+        win.className = 'window';
+        win.id = id + '-window';
+        win.style.zIndex = ++zIndex;
+
+        win.innerHTML = `
+          <div class="title-bar" onmousedown="dragStart(event, this.parentElement)">
+            <div>${title}</div>
+            <div class="title-bar-buttons">
+              <div class="title-btn minimize" onclick="minimizeWindow('${id}-window')"></div>
+              <div class="title-btn maximize" onclick="toggleMaximize('${id}-window')"></div>
+              <div class="title-btn close" onclick="closeWindow('${id}-window')"></div>
+            </div>
+          </div>
+          <div class="window-content" id="${id}-content">
+            <p style="text-align:center; margin-top:80px; color:#888;">Loading ${title}...</p>
+          </div>
+        `;
+        document.body.appendChild(win);
+
+        try {
+          const res = await fetch(`${id}.html`);
+          if (res.ok) document.getElementById(id + '-content').innerHTML = await res.text();
+        } catch(e) {}
+      }
+
+      // FIX: Removed inset='0' so windows pop out in custom window standard layout bounds instead of starting full screen
+      win.style.display = 'flex';
+      win.style.zIndex = ++zIndex;
+      updateTaskbar(id, title, true);
+    }
+
+    function closeWindow(id) {
+      const win = document.getElementById(id);
+      if (win) win.remove();
+      updateTaskbar(id.replace('-window',''), '', false);
+    }
+
+    function minimizeWindow(id) {
+      const win = document.getElementById(id);
+      if (win) win.style.display = 'none';
+    }
+
+    function toggleMaximize(id) {
+      const win = document.getElementById(id);
+      if (!win) return;
+
+      if (win.style.inset === '0px' || win.style.inset === '0') {
+        win.style.inset = '';
+        win.style.width = '750px';
+        win.style.height = '500px';
+        win.style.borderRadius = '14px';
+      } else {
+        win.style.inset = '0';
+        win.style.width = '100%';
+        win.style.height = 'calc(100vh - 52px)';
+        win.style.borderRadius = '0';
+      }
+    }
+
+    function updateTaskbar(id, title, isOpen) {
+      const container = document.getElementById('taskbarApps');
+      let task = document.getElementById('task-' + id);
+
+      if (isOpen && !task) {
+        task = document.createElement('div');
+        task.className = 'task-item active';
+        task.id = 'task-' + id;
+        task.innerHTML = `<i class="fas fa-folder"></i>`;
+        task.title = title;
+        task.onclick = () => {
+          const win = document.getElementById(id + '-window');
+          if (win) win.style.display = (win.style.display === 'none') ? 'flex' : 'none';
+        };
+        container.appendChild(task);
+      } else if (!isOpen && task) {
+        task.remove();
+      }
+    }
+
+    // Dragging
+    let dragElement = null, offsetX, offsetY;
+    function dragStart(e, el) {
+      if (e.target.classList.contains('title-btn')) return;
+      dragElement = el;
+      offsetX = e.clientX - el.offsetLeft;
+      offsetY = e.clientY - el.offsetTop;
+      el.style.zIndex = ++zIndex;
+    }
+    document.addEventListener('mousemove', e => {
+      if (dragElement) {
+        dragElement.style.left = (e.clientX - offsetX) + 'px';
+        dragElement.style.top = (e.clientY - offsetY) + 'px';
+      }
+    });
+    document.addEventListener('mouseup', () => dragElement = null);
+
+    // Icon Right Click & Double Click
+    const contextMenu = document.getElementById('icon-context-menu');
+    let currentIcon = null;
+
+    document.querySelectorAll('.icon').forEach(icon => {
+      icon.addEventListener('dblclick', () => {
+        openWindow(icon.dataset.id, icon.querySelector('span').textContent);
+      });
+
+      icon.addEventListener('contextmenu', e => {
+        e.preventDefault(); e.stopPropagation();
+        currentIcon = icon;
+        const rect = icon.getBoundingClientRect();
+        let x = rect.right + 10, y = rect.top;
+        if (x + 200 > window.innerWidth) x = rect.left - 190;
+        contextMenu.style.left = x + 'px';
+        contextMenu.style.top = y + 'px';
+        contextMenu.style.display = 'block';
+      });
+    });
+
+    // Context Menu Actions
+    document.getElementById('ctx-open').onclick = () => {
+      if (currentIcon) openWindow(currentIcon.dataset.id, currentIcon.querySelector('span').textContent);
+      contextMenu.style.display = 'none';
+    };
+    document.getElementById('ctx-rename').onclick = () => {
+      if (currentIcon) {
+        const span = currentIcon.querySelector('span');
+        const newName = prompt("Rename icon:", span.textContent);
+        if (newName?.trim()) span.textContent = newName.trim();
+      }
+      contextMenu.style.display = 'none';
+    };
+    document.getElementById('ctx-delete').onclick = () => {
+      if (currentIcon && confirm("Delete this icon?")) currentIcon.remove();
+      contextMenu.style.display = 'none';
+    };
+
+    // Wallpaper Menu
+    document.querySelectorAll('#wallpaper-menu .wallpaper-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const url = item.getAttribute('data-url');
+        if (url.endsWith('.mp4')) {
+          document.body.style.backgroundImage = '';
+          document.getElementById('video-bg').src = url;
+        } else {
+          document.body.style.backgroundImage = `url('${url}')`;
+          document.body.style.backgroundSize = 'cover';
+        }
+        document.getElementById('wallpaper-menu').style.display = 'none';
+      });
+    });
+
+    // Desktop Right Click
+    document.getElementById('desktop').addEventListener('contextmenu', e => {
+      if (e.target.closest('.icon')) return;
+      e.preventDefault();
+      const menu = document.getElementById('wallpaper-menu');
+      let x = e.clientX, y = e.clientY;
+      if (x + 240 > window.innerWidth) x = window.innerWidth - 250;
+      if (y + 280 > window.innerHeight) y = window.innerHeight - 300;
+      menu.style.left = x + 'px';
+      menu.style.top = y + 'px';
+      menu.style.display = 'block';
+    });
+
+    // Close menus when clicking outside
+    document.addEventListener('click', () => {
+      contextMenu.style.display = 'none';
+      document.getElementById('wallpaper-menu').style.display = 'none';
+      document.getElementById('start-menu').style.display = 'none'; // Closes start menu cleanly
+    });
+
+    document.getElementById('start-btn').addEventListener('click', e => {
+      e.stopPropagation();
+      const menu = document.getElementById('start-menu');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    });
+  </script>
+</body>
+</html>
