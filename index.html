@@ -205,8 +205,8 @@
       position: fixed;
       bottom: 60px;
       left: 10px;
-      width: 280px;
-      height: 350px;
+      width: 340px;
+      height: 520px;
       background: var(--glass);
       backdrop-filter: blur(25px);
       border: 1px solid rgba(255,255,255,0.15);
@@ -265,9 +265,34 @@
   </div>
 
   <div id="start-menu">
-    <h4 style="color: var(--accent); margin-bottom: 10px;">Applications</h4>
-    <p style="font-size: 0.9rem; color: #aaa;">Portfolio OS Systems Active. hello friends it's me Rounak</p>
+  <h4 style="color: var(--accent); margin-bottom: 15px;">
+    <i class="fas fa-desktop"></i> Portfolio OS
+  </h4>
+
+  <div style="font-size: 0.9rem; color: #ccc; line-height: 1.7;">
+
+    <p style="margin-bottom: 12px; color: #00f0ff; font-weight: 600;">
+      Welcome to Rounak Chouhan's Interactive Portfolio
+    </p>
+
+    <p style="margin-bottom: 8px;">
+      Explore my projects, skills, internship experience, certifications, gallery, and professional journey through a desktop-inspired interface.
+    </p>
+
+    <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 12px 0;">
+
+    <p><strong>Quick Guide:</strong></p>
+
+    <ul style="padding-left: 18px; margin-top: 8px;">
+      <li>🖱️ Right-click on the desktop to change wallpapers.</li>
+      <li>📂 Double-click any icon to open an application.</li>
+      <li>⚙️ Right-click an icon to Open, Rename, or Delete it.</li>
+      <li>🪟 Use window controls to Minimize, Maximize, or Close applications.</li>
+      <li>📋 Access About Me, Skills, Projects, Resume, Gallery, Contact, and Internship sections.</li>
+    </ul>
+
   </div>
+</div>
 
   <div class="taskbar">
     <div class="start-btn" id="start-btn"><i class="fab fa-windows"></i></div>
@@ -331,9 +356,14 @@
         } catch(e) {}
       }
 
-      // FIX: Removed inset='0' so windows pop out in custom window standard layout bounds instead of starting full screen
+      // Open maximized by default
       win.style.display = 'flex';
       win.style.zIndex = ++zIndex;
+      win.style.inset = '0';
+      win.style.width = '100%';
+      win.style.height = 'calc(100vh - 52px)';
+      win.style.borderRadius = '0';
+
       updateTaskbar(id, title, true);
     }
 
